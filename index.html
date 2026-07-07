@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Damola Philip — Crypto Market Writer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1220;
+    --panel:#111B2E;
+    --line:#22314A;
+    --text:#E7ECF3;
+    --muted:#8CA0BA;
+    --gold:#E3B341;
+    --green:#34D399;
+    --red:#F0645A;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+  }
+  a{color:inherit;}
+
+  /* ---- Ticker ---- */
+  .ticker-wrap{
+    background:#0A0F1C;
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+    white-space:nowrap;
+    padding:9px 0;
+    position:sticky;
+    top:0;
+    z-index:50;
+  }
+  .ticker{
+    display:inline-block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.02em;
+    animation:scroll 32s linear infinite;
+    padding-left:100%;
+  }
+  .ticker span{ margin-right:38px; color:var(--muted); }
+  .ticker span b{ color:var(--text); font-weight:500; margin-right:6px;}
+  .up{color:var(--green);}
+  .down{color:var(--red);}
+  @keyframes scroll{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-100%);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .ticker{ animation:none; padding-left:16px; }
+  }
+
+  .wrap{max-width:840px; margin:0 auto; padding:0 24px;}
+
+  /* ---- Hero ---- */
+  header.hero{ padding:72px 0 56px; }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    color:var(--gold);
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    margin-bottom:18px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:7px;height:7px;border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 0 3px rgba(52,211,153,0.15);
+    display:inline-block;
+  }
+  h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:clamp(38px,7vw,58px);
+    line-height:1.05;
+    margin:0 0 16px;
+    letter-spacing:-0.01em;
+  }
+  .tagline{
+    font-size:18px;
+    color:var(--muted);
+    max-width:520px;
+    margin:0 0 30px;
+  }
+  .hero-actions{ display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    padding:12px 20px;
+    border-radius:6px;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    border:1px solid var(--line);
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .btn-primary{ background:var(--gold); color:#14100A; border-color:var(--gold); font-weight:600;}
+  .btn-primary:hover{ background:#f0c157; }
+  .btn-ghost{ color:var(--text); }
+  .btn-ghost:hover{ border-color:var(--muted); }
+
+  /* ---- Sections ---- */
+  section{ padding:52px 0; border-top:1px solid var(--line); }
+  .label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--gold);
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    margin-bottom:20px;
+  }
+  h2{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:26px;
+    margin:0 0 18px;
+    font-weight:600;
+  }
+  p.copy{ color:#C4D0E0; font-size:15.5px; max-width:640px; margin:0 0 14px;}
+
+  .focus-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    border-radius:8px;
+    overflow:hidden;
+    margin-top:24px;
+  }
+  .focus-cell{
+    background:var(--panel);
+    padding:16px 18px;
+    font-size:14px;
+  }
+  .focus-cell .tk{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--muted);
+    display:block;
+    margin-bottom:6px;
+  }
+
+  .exp-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:20px 22px;
+    margin-bottom:14px;
+  }
+  .exp-card h3{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:16px;
+    margin:0 0 8px;
+    font-weight:600;
+    color:var(--text);
+  }
+  .exp-card p{ color:var(--muted); font-size:14.5px; margin:0; }
+
+  /* ---- Watchlist table (selected work) ---- */
+  .watchlist{
+    border:1px solid var(--line);
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .wrow{
+    display:grid;
+    grid-template-columns:64px 1fr auto;
+    gap:14px;
+    align-items:center;
+    padding:14px 18px;
+    border-bottom:1px solid var(--line);
+    text-decoration:none;
+    color:var(--text);
+    transition:background .12s ease;
+  }
+  .wrow:last-child{ border-bottom:none; }
+  .wrow:hover{ background:var(--panel); }
+  .wid{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--muted);
+  }
+  .wtitle{ font-size:14.5px; }
+  .wopen{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--green);
+    white-space:nowrap;
+  }
+
+  /* ---- How I can help ---- */
+  .help-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:14px;
+    margin-top:8px;
+  }
+  .help-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:18px 20px;
+    font-size:14.5px;
+    color:#C4D0E0;
+  }
+  .help-card b{ color:var(--text); display:block; margin-bottom:6px; font-size:15px; font-family:'Space Grotesk',sans-serif;}
+
+  footer{
+    padding:50px 0 60px;
+    border-top:1px solid var(--line);
+    text-align:center;
+  }
+  footer h2{ font-size:24px; }
+  footer p.copy{ margin:0 auto 26px; }
+  .footer-email{
+    font-family:'JetBrains Mono',monospace;
+    font-size:15px;
+    color:var(--gold);
+    text-decoration:none;
+  }
+  .footer-links{
+    margin-top:14px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--muted);
+  }
+  .footer-links a{ color:var(--muted); text-decoration:none; }
+  .footer-links a:hover{ color:var(--text); }
+  .footer-links .dot{ margin:0 10px; color:var(--line); }
+  .fine{
+    margin-top:34px;
+    font-size:12px;
+    color:#54637C;
+    font-family:'JetBrains Mono',monospace;
+  }
+
+  @media (max-width:560px){
+    .wrow{ grid-template-columns:48px 1fr; }
+    .wopen{ grid-column:2; justify-self:start; margin-top:2px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span><b>BTC</b> <span class="up">▲ market coverage</span></span>
+    <span><b>ETH</b> <span class="down">▼ on-chain analysis</span></span>
+    <span><b>XRP</b> <span class="up">▲ regulatory updates</span></span>
+    <span><b>SOL</b> <span class="up">▲ investor updates</span></span>
+    <span><b>DOGE</b> <span class="down">▼ ICO &amp; presale copy</span></span>
+    <span><b>ADA</b> <span class="up">▲ price analysis</span></span>
+    <span><b>BTC</b> <span class="up">▲ market coverage</span></span>
+    <span><b>ETH</b> <span class="down">▼ on-chain analysis</span></span>
+    <span><b>XRP</b> <span class="up">▲ regulatory updates</span></span>
+    <span><b>SOL</b> <span class="up">▲ investor updates</span></span>
+    <span><b>DOGE</b> <span class="down">▼ ICO &amp; presale copy</span></span>
+    <span><b>ADA</b> <span class="up">▲ price analysis</span></span>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Available for assignments</div>
+    <h1>Damola Philip</h1>
+    <p class="tagline">I write crypto market news, price analysis, and investor content that reads like it was written by someone who actually understands the market — because I do.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="mailto:adewumidamola1@gmail.com">Email me →</a>
+      <a class="btn btn-ghost" href="#work">See my work</a>
+      <a class="btn btn-ghost" href="https://x.com/lore_bit44364" target="_blank" rel="noopener">Follow on X</a>
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="label">About</div>
+    <h2>Self-taught, market-first.</h2>
+    <p class="copy">I got into crypto the way most people in this space do — deep in the markets long before I ever thought of myself as a writer. Reading whitepapers and market threads out of pure curiosity turned into understanding the space well enough to explain it to other people. That's really where the writing started: wanting to create something that actually meant something, instead of another recycled crypto article that says nothing new.</p>
+    <p class="copy">A few years and a lot of research-heavy nights later, I write daily market news, price analysis, and investor-facing content for crypto brands and news outlets — most of it under other people's names, some of it under my own.</p>
+
+    <div class="focus-grid">
+      <div class="focus-cell"><span class="tk">FOCUS · 01</span>Market news &amp; breaking developments</div>
+      <div class="focus-cell"><span class="tk">FOCUS · 02</span>Regulatory &amp; policy updates</div>
+      <div class="focus-cell"><span class="tk">FOCUS · 03</span>Investor updates &amp; project comms</div>
+      <div class="focus-cell"><span class="tk">FOCUS · 04</span>ICO &amp; presale content</div>
+      <div class="focus-cell"><span class="tk">FOCUS · 05</span>Price &amp; market analysis</div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="label">Experience</div>
+    <h2>Where I've written.</h2>
+    <div class="exp-card">
+      <h3>ICO / Presale Fundraising Content</h3>
+      <p>Wrote fundraising and marketing content for a crypto presale project during its ICO, helping the team communicate their vision clearly to potential investors at a stage where every piece of copy matters.</p>
+    </div>
+    <div class="exp-card">
+      <h3>Daily Crypto News — Ghostwriting Contract</h3>
+      <p>Ongoing ghostwritten market analysis and news coverage for a daily crypto news website, read by everyday investors trying to make sense of a fast-moving market. Writing to a daily deadline without the quality slipping, and turning complex market movements into something a non-technical reader can actually use.</p>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="label">Selected Work</div>
+    <h2>A few recent pieces.</h2>
+    <p class="copy">From beginner-friendly explainers to sharper market analysis — this is the range I write across.</p>
+    <div class="watchlist">
+      <a class="wrow" href="https://docs.google.com/document/d/1GZ23v2Nno7mT6n5whArGpCDOorLBGF5mZx5Xi9uS-oc/edit?usp=sharing" target="_blank" rel="noopener">
+        <span class="wid">MKT‑01</span>
+        <span class="wtitle">How Do I Buy an XRP ETF for Beginners?</span>
+        <span class="wopen">Open ↗</span>
+      </a>
+      <a class="wrow" href="https://docs.google.com/document/d/1s4I0KkH3AOFVJpt9BiBJ_a7qhEzLlP1W4ha6oabdDLo/edit?usp=sharing" target="_blank" rel="noopener">
+        <span class="wid">MKT‑02</span>
+        <span class="wtitle">Will Solana Ever Go Back Up to $294?</span>
+        <span class="wopen">Open ↗</span>
+      </a>
+      <a class="wrow" href="https://docs.google.com/document/d/1saDNCZHb1VqmpFDdj143dE50zqMXGtDlrlAks2W0iRE/edit?usp=sharing" target="_blank" rel="noopener">
+        <span class="wid">MKT‑03</span>
+        <span class="wtitle">We Asked ChatGPT, Claude, Grok &amp; Gemini About XRP's Price by July 4</span>
+        <span class="wopen">Open ↗</span>
+      </a>
+      <a class="wrow" href="https://docs.google.com/document/d/1oz_Ym_mmDAYbLh4E3Ee-EzeC5NG654XH_36gpnRlfHo/edit?usp=sharing" target="_blank" rel="noopener">
+        <span class="wid">MKT‑04</span>
+        <span class="wtitle">Analyst Identifies the Top 3 Dogecoin Rivals of This Cycle</span>
+        <span class="wopen">Open ↗</span>
+      </a>
+      <a class="wrow" href="https://docs.google.com/document/d/16o2xV93GXzesodf-0Dgb1W2JPkLVYcAlqsrEoHl4Y_Y/edit?usp=sharing" target="_blank" rel="noopener">
+        <span class="wid">MKT‑05</span>
+        <span class="wtitle">Ethereum's Golden Cross Pattern Could Signal a Bull Run</span>
+        <span class="wopen">Open ↗</span>
+      </a>
+      <a class="wrow" href="https://docs.google.com/document/d/1mKLpG9I6Iq4jCfZFhPy1dLUeR5VBsUNmkBcgwte2zz0/edit?usp=sharing" target="_blank" rel="noopener">
+        <span class="wid">MKT‑06</span>
+        <span class="wtitle">Is WallitIQ (WLTQ) the New Shiba Inu?</span>
+        <span class="wopen">Open ↗</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="help">
+    <div class="label">How I Can Help</div>
+    <h2>What you can hire me for.</h2>
+    <div class="help-grid">
+      <div class="help-card"><b>Daily / weekly news coverage</b>Keeps your readers updated without the fluff or filler.</div>
+      <div class="help-card"><b>Price &amp; market analysis</b>Written for new and experienced investors alike.</div>
+      <div class="help-card"><b>ICO &amp; token launch copy</b>Content that builds investor confidence at fundraising stage.</div>
+      <div class="help-card"><b>Regulatory breakdowns</b>Policy and compliance news explained in plain language.</div>
+      <div class="help-card"><b>Ghostwriting</b>Consistent voice for news sites, newsletters &amp; project blogs — on time, no drama.</div>
+      <div class="help-card"><b>SEO-aware writing</b>Still reads like it was written by a human. Because it was.</div>
+    </div>
+  </section>
+
+  <footer>
+    <h2>Let's work together.</h2>
+    <p class="copy" style="margin-left:auto;margin-right:auto;text-align:center;">If you're looking for a writer who already understands crypto markets and doesn't need hand-holding on terminology or context, I'd love to hear from you.</p>
+    <a class="footer-email" href="mailto:adewumidamola1@gmail.com">adewumidamola1@gmail.com</a>
+    <div class="footer-links">
+      <a href="tel:+2348133356260">+234 813 335 6260</a>
+      <span class="dot">·</span>
+      <a href="https://x.com/lore_bit44364" target="_blank" rel="noopener">@lore_bit44364 on X</a>
+    </div>
+    <div class="fine">© <span id="yr"></span> Damola Philip</div>
+  </footer>
+</div>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
